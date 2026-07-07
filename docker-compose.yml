@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: forward_bot_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: fwbot_admin
+      POSTGRES_PASSWORD: changeme_strong_password_here
+      POSTGRES_DB: forward_bot_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  redis:
+    image: redis:7-alpine
+    container_name: forward_bot_redis
+    restart: always
+    command: redis-server --requirepass changeme_redis_pass
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
+
+  bot:
+    build: .
+    container_name: forward_bot_app
+    restart: always
+    depends_on:
+      - postgres
+      - redis
+    env_file:
+      - .env
+    # We will override database and redis URLs to point to docker container names
+    environment:
+      - DATABASE_URL=postgresql+asyncpg://fwbot_admin:changeme_strong_password_here@postgres:5432/forward_bot_db
+      - REDIS_URL=redis://:changeme_redis_pass@redis:6379/0
+    command: sh -c "alembic upgrade head && python -m app.main"
+
+volumes:
+  pgdata:
+  redisdata:
