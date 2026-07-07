@@ -239,10 +239,11 @@ async def process_queued_post(bot: Bot, session: AsyncSession, post: QueuePost):
 
     except Exception as err:
         logger.exception(f"Failed to process queue post {post.id}: {err}")
-        # Log failed event in DB
+        # Log failed event in DB and mark as processed to prevent infinite loop
         try:
             event = EventLog(channel_id=post.channel_id, message_type="queue_fail", success=False)
             session.add(event)
+            post.is_processed = True
             await session.commit()
         except Exception:
             pass
