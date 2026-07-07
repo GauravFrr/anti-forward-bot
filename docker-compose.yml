@@ -6,9 +6,9 @@ services:
     container_name: forward_bot_postgres
     restart: always
     environment:
-      POSTGRES_USER: fwbot_admin
-      POSTGRES_PASSWORD: changeme_strong_password_here
-      POSTGRES_DB: forward_bot_db
+      POSTGRES_USER: ${POSTGRES_USER:-fwbot_admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-changeme_strong_password_here}
+      POSTGRES_DB: ${POSTGRES_DB:-forward_bot_db}
     ports:
       - "5432:5432"
     volumes:
