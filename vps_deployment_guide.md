@@ -52,10 +52,10 @@ nano .env
 Fill in the configuration details:
 ```ini
 # Telegram Bot Token from @BotFather
-BOT_TOKEN=8366861081:AAHwALxXHoXvI_IQKAc_6DPUMKmMlAj6VBk
+BOT_TOKEN=<YOUR_BOT_TOKEN_HERE>
 
 # Your Telegram account ID (Owner of the bot)
-OWNER_ID=6447766151
+OWNER_ID=<YOUR_TELEGRAM_USER_ID>
 
 # Logger verbosity level
 LOG_LEVEL=INFO
