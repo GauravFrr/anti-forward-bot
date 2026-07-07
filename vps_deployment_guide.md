@@ -37,10 +37,10 @@ sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plug
 ## 2. Deploying the Application
 
 ### Step 1: Clone the Repository
-Clone your project repository onto the VPS directory:
+Clone your project repository onto the VPS directory (we recommend cloning directly into your home directory `~/` to avoid permission errors):
 ```bash
-git clone <your-git-repository-url> /var/www/anti-forward-bot
-cd /var/www/anti-forward-bot
+git clone https://github.com/GauravFrr/anti-forward-bot.git ~/anti-forward-bot
+cd ~/anti-forward-bot
 ```
 
 ### Step 2: Configure Environment Variables
