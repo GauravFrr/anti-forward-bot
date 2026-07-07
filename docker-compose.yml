@@ -33,10 +33,6 @@ services:
       - redis
     env_file:
       - .env
-    # We will override database and redis URLs to point to docker container names
-    environment:
-      - DATABASE_URL=postgresql+asyncpg://fwbot_admin:changeme_strong_password_here@postgres:5432/forward_bot_db
-      - REDIS_URL=redis://:changeme_redis_pass@redis:6379/0
     command: sh -c "alembic upgrade head && python -m app.main"
 
 volumes:
