@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anti-Forward Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="glass-panel">
+            <div class="user-info">
+                <span id="user-avatar" class="avatar">🤖</span>
+                <div>
+                    <h2 id="user-name">Welcome!</h2>
+                    <p class="subtitle" id="user-role">Subscriber</p>
+                </div>
+            </div>
+            <div id="stats-header" class="header-stats">
+                <span id="monthly-active">Active</span>
+            </div>
+        </header>
+
+        <!-- Navigation Tabs -->
+        <nav class="tabs-nav">
+            <button class="tab-btn active" onclick="switchTab('channels')">📂 Channels</button>
+            <button class="tab-btn" id="admin-tab-btn" onclick="switchTab('admin')" style="display: none;">👑 Admin</button>
+        </nav>
+
+        <!-- Channels Tab -->
+        <main id="tab-channels" class="tab-content active">
+            <div class="section-title">
+                <h3>My Channels</h3>
+            </div>
+            <div id="channels-list" class="channels-grid">
+                <p class="loading-text">Loading your channels...</p>
+            </div>
+
+            <!-- Settings Modal/Editor (loads when channel is clicked) -->
+            <div id="settings-panel" class="glass-panel settings-card" style="display: none;">
+                <div class="settings-header">
+                    <h4 id="selected-channel-title">Configure Channel</h4>
+                    <button class="close-btn" onclick="closeSettings()">✕</button>
+                </div>
+                <div class="form-group">
+                    <label for="custom-footer">📝 Custom Repost Footer</label>
+                    <textarea id="custom-footer" placeholder="e.g. Join @MyChannelName or custom links here..."></textarea>
+                    <p class="tip">Appended automatically to the end of reposts.</p>
+                </div>
+                <div class="toggle-group">
+                    <div class="toggle-container">
+                        <div>
+                            <label>📌 Auto-Pin Syncing</label>
+                            <p class="tip">Automatically pins clean reposts in your channel.</p>
+                        </div>
+                        <input type="checkbox" id="auto-pin" class="toggle-switch">
+                    </div>
+                    <div class="toggle-container">
+                        <div>
+                            <label>⏰ Spaced Posting Queue</label>
+                            <p class="tip">Delays and schedules posts to prevent feed bursts.</p>
+                        </div>
+                        <input type="checkbox" id="queue-enabled" class="toggle-switch" onchange="toggleQueueSlider()">
+                    </div>
+                </div>
+                <div class="form-group slider-group" id="queue-slider-container" style="display: none;">
+                    <label for="queue-interval">⏱️ Queue Interval: <span id="slider-val">15</span> minutes</label>
+                    <input type="range" id="queue-interval" min="5" max="180" step="5" value="15" oninput="updateSliderLabel(this.value)">
+                </div>
+                <button id="save-settings-btn" class="action-btn" onclick="saveSettings()">Save Configuration</button>
+            </div>
+        </main>
+
+        <!-- Admin Tab (Owner only) -->
+        <main id="tab-admin" class="tab-content">
+            <div class="metrics-grid">
+                <div class="metric-card glass-panel">
+                    <p class="metric-label">Total Users</p>
+                    <h3 id="metric-users">0</h3>
+                </div>
+                <div class="metric-card glass-panel">
+                    <p class="metric-label">Active Channels</p>
+                    <h3 id="metric-channels">0</h3>
+                </div>
+                <div class="metric-card glass-panel">
+                    <p class="metric-label">Cleaned Posts</p>
+                    <h3 id="metric-posts">0</h3>
+                </div>
+            </div>
+
+            <!-- Broadcast Box -->
+            <div class="glass-panel admin-action-card">
+                <h4>📤 Broadcast Announcement</h4>
+                <p class="tip">Send a markdown/HTML formatted message to all bot subscribers safely.</p>
+                <div class="form-group">
+                    <textarea id="broadcast-message" placeholder="Type your broadcast message here..."></textarea>
+                </div>
+                <button class="action-btn danger-btn" onclick="sendBroadcast()">Send Broadcast</button>
+            </div>
+        </main>
+    </div>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
